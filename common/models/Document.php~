@@ -1,0 +1,60 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "document".
+ *
+ * @property integer $id
+ * @property string $dateAjout
+ * @property string $description
+ * @property integer $documentType_id
+ *
+ * @property DocumentType $documentType
+ */
+class Document extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'document';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['dateAjout', 'description', 'documentType_id'], 'required'],
+            [['dateAjout'], 'safe'],
+            [['documentType_id'], 'integer'],
+            [['description'], 'string', 'max' => 45]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'dateAjout' => Yii::t('app', 'Date Ajout'),
+            'description' => Yii::t('app', 'Description'),
+            'documentType_id' => Yii::t('app', 'Document Type ID'),
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocumentType()
+    {
+        return $this->hasOne(DocumentType::className(), ['id' => 'documentType_id']);
+    }
+}
